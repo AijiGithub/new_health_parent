@@ -19,7 +19,7 @@
                 login-processing-url="/login.do"
                 username-parameter="username"
                 password-parameter="password"
-                default-target-url="/pages/role.html"
+                default-target-url="/pages/main.html"
                 authentication-failure-url="/fail.html"
                 always-use-default-target="true"
         />
