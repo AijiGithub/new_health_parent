@@ -1,18 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>传智健康</title>
+    <meta name="description" content="传智健康">
+    <meta name="keywords" content="传智健康">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/style.css">
     <script src="../js/echarts.js"></script>
 </head>
-<body>
-<div class="app-container">
-    <div class="box">
-        <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-        <div id="chart1" style="height:800px;"></div>
+<body class="hold-transition">
+<div id="app">
+    <div class="content-header">
+        <h1>统计分析<small>会员信息</small></h1>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>统计分析</el-breadcrumb-item>
+            <el-breadcrumb-item>会员信息</el-breadcrumb-item>
+        </el-breadcrumb>
+    </div>
+    <div class="app-container">
+        <div class="box">
+            <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+            <div id="chart1" style="height:800px;"></div>
+        </div>
     </div>
 </div>
-</body><script src="../js/vue.js"></script>
+</body>
+<script src="../js/vue.js"></script>
 <script src="../js/axios-0.18.0.js"></script>
 <script type="text/javascript">
     var myChart= echarts.init(document.getElementById('chart1'));
@@ -21,16 +39,19 @@
          var data = res.data.data.sexNum;
          var data1 = res.data.data.ageGroup;
         var option = {
+            color:['#c93756','#2e4e7e','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
             title: [{
-                text: '会员信息分析表'
+                text: '会员信息占比',
+                subtext: '',
+                x:'center'
             }, {
-                subtext: '男女会员统计表',
-                left: '33%',
+                subtext: '会员性别统计表',
+                left: '30%',
                 top: '60%',
                 textAlign: 'center'
             }, {
                 subtext: '会员年龄段统计表',
-                left: '66%',
+                left: '70%',
                 top: '60%',
                 textAlign: 'center'
             }
@@ -42,16 +63,15 @@
             },
             legend: {
                 orient: 'vertical',
-                left: '10%',
-                top: '10%',
+                left: 'left',
                 data: res.data.data.allText
             },
 
             series: [{
                 name:'会员性别',
                 type: 'pie',
-                radius: '25%',
-                center: ['33%', '40%'],
+                radius: '30%',
+                center: ['30%', '35%'],
                 data: data,
                emphasis: {
                     itemStyle: {
@@ -67,8 +87,8 @@
             }, {
                 name:'会员年龄',
                 type: 'pie',
-                radius: '25%',
-                center: ['66%', '40%'],
+                radius: '30%',
+                center: ['70%', '35%'],
                 data: data1,
                 emphasis: {
                     itemStyle: {

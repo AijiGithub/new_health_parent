@@ -8,7 +8,8 @@ html,body {
     width: 85%;
   
 }
-.login-container .input input {
+
+.login-container .input {
   background: transparent;
   border: 0px;
   -webkit-appearance: none;
@@ -40,10 +41,10 @@ html,body {
   position: absolute;
   left: 20%;
   top: 50%;
-  width: 520px;
+  width: 480px;
   padding: 35px 35px 15px 35px;
   margin: -200px 0 0 0;
-  background:#f5f5f5;
+  background: gray();
 }
 .login-container .tips {
   font-size: 14px;
@@ -119,8 +120,7 @@ html,body {
   
 }
 .logoInfo .logo{
-	background: url(../img/loginLogo.png) no-repeat;
-	display:inline-block;
+	background: url(../img/loginLogo2.jpg) no-repeat;
 	width: 200px;
 	height: 30px;
   display: inline-block;
@@ -145,3 +145,33 @@ html,body {
 .svg-container .username{
   background: url(../img/pwd.png) no-repeat 0 50%;
 }
+gcs-login .login-title {
+
+  text-align: center;
+
+  color: #62a8ea;
+
+}
+
+.gcs-login .login-title h2 {
+
+  letter-spacing: 10px;
+
+}
+
+.gcs-login-container {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  width: 100%;
+
+  margin: 20px 0 0;
+
+  text-align: center;
+
+}
+
+
+
