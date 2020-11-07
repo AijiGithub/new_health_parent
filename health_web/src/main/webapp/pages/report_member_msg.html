@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/echarts.js"></script>
+</head>
+<body>
+<div class="app-container">
+    <div class="box">
+        <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+        <div id="chart1" style="height:800px;"></div>
+    </div>
+</div>
+</body><script src="../js/vue.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script type="text/javascript">
+    var myChart= echarts.init(document.getElementById('chart1'));
+
+    axios.get('/memberShow/findMemeberMsg.do').then(res=> {
+         var data = res.data.data.sexNum;
+         var data1 = res.data.data.ageGroup;
+        var option = {
+            title: [{
+                text: '会员信息分析表'
+            }, {
+                subtext: '男女会员统计表',
+                left: '33%',
+                top: '60%',
+                textAlign: 'center'
+            }, {
+                subtext: '会员年龄段统计表',
+                left: '66%',
+                top: '60%',
+                textAlign: 'center'
+            }
+            ],
+            //鼠标移动获取数据
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: '10%',
+                top: '10%',
+                data: res.data.data.allText
+            },
+
+            series: [{
+                name:'会员性别',
+                type: 'pie',
+                radius: '25%',
+                center: ['33%', '40%'],
+                data: data,
+               emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                },
+                left: 0,
+                right: '66.6667%',
+                top: 0,
+                bottom: 0
+            }, {
+                name:'会员年龄',
+                type: 'pie',
+                radius: '25%',
+                center: ['66%', '40%'],
+                data: data1,
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                },
+                left: '33.3333%',
+                right: '33.3333%',
+                top: 0,
+                bottom: 0
+            }]
+        };
+    myChart.setOption(option)
+    });
+
+</script>
+</html>
