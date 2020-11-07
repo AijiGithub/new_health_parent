@@ -1,5 +1,7 @@
 package com.itheima.health.service;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.Map;
 
 /**
@@ -17,4 +19,6 @@ public interface ReportService {
      * @return
      */
     Map<String, Object> getBusinessReportData();
+
+    Map findMemeberAge(String startmonth, String endmonth);
 }
