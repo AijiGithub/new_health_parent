@@ -30,6 +30,12 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private OrderDao orderDao;
 
+
+    @Override
+    public Map findMemeberAge(String startmonth, String endmonth) {
+        return null;
+    }
+
     /**
      * 获取运营数据统计
      * @return

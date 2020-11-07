@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--namespace属性: 接口类的全限定名-->
+<mapper namespace="com.itheima.health.dao.MemberShowDao" >
+
+    <select id="findMemeberSex" parameterType="int" resultType="java.lang.Integer">
+        select count(sex) from t_member where sex = #{sexId}
+    </select>
+
+    <select id="findMemeberAge" resultType="int" >
+        select count(*) from
+        (SELECT
+        idcard,YEAR (NOW()) - substring(idcard, 7, 4) as n
+        FROM
+        t_member where idcard >0 HAVING n &gt; #{age1}
+        <if test="age2 != null and age2 >=0">
+            and n &lt; #{age2}
+        </if>
+        ) as n
+
+    </select>
+</mapper>
