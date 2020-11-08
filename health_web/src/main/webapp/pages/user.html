@@ -34,7 +34,11 @@
                         <el-table-column type="index" align="center" label="序号"></el-table-column>
                         <el-table-column prop="username" label="用户名" align="center"></el-table-column>
                         <el-table-column prop="password" label="密码" align="center"></el-table-column>
-                        <el-table-column prop="roles" label="角色" align="center"></el-table-column>
+                        <el-table-column prop="roles" label="角色" align="center">
+                            <template slot-scope="scope">
+                                <span v-for="r in scope.row.roles">{{r.name}}<br></span>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="birthday" label="生日" align="center"></el-table-column>
                         <el-table-column prop="gender" label="性别" align="center"></el-table-column>
                         <el-table-column prop="station" label="状态" align="center"></el-table-column>
