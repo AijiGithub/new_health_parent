@@ -32,7 +32,7 @@ public interface UserDao {
 
     void addUserRole(@Param("userId") Integer userId, @Param("roleId") Integer roleId);
 
-    Integer getId(User user);
+    /*Integer getId(User user);*/
 
 
     Page<User> findByCondition(String queryString);

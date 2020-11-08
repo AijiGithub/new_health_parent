@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void add(User user,Integer[] roles) {
         userDao.add(user);
-        user.setId(userDao.getId(user));
+        /*user.setId(userDao.getId(user));*/
         if(null!=roles){
             for (Integer role : roles) {
                 userDao.addUserRole(user.getId(),role);
