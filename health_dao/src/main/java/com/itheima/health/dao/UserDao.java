@@ -1,6 +1,9 @@
 package com.itheima.health.dao;
 
+import com.itheima.health.pojo.Menu;
 import com.itheima.health.pojo.User;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,8 @@ public interface UserDao {
      * @return
      */
     User findByUsername(String username);
+
+    List<Menu> getMenuByUsername(String username);
+
+    List<Menu> findSecondMenu(Integer id);
 }
