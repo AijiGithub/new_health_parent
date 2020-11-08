@@ -68,4 +68,8 @@ public interface MessageConstant {
     static final String GET_BUSINESS_REPORT_FAIL = "获取运营统计数据失败";
     static final String GET_SETMEAL_LIST_SUCCESS = "查询套餐列表数据成功";
     static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
+    static final String QUERY_PERMISSION_SUCCESS = "查询权限列表数据成功";
+//    static final String QUERY_MENU_SUCCESS = "查询菜单列表数据成功";
+    static final String ADD_ROLE_SUCCESS = "添加角色成功";
+    static final String QUERY_ROLE_SUCCESS = "查询角色成功";
 }

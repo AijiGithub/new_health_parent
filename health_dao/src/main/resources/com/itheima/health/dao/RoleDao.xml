@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.health.dao.RoleDao">
+    <insert id="add" keyProperty="id" useGeneratedKeys="true">
+        insert into t_role (name,keyword,description)
+        values (#{name},#{keyword},#{description})
+    </insert>
+
+    <insert id="addRolePermission" parameterType="int">
+        insert into t_role_permission (role_id,permission_id)
+        values(#{roleId},#{permissionId})
+    </insert>
+
+    <insert id="addRoleMenu" parameterType="int">
+        insert into t_role_menu (role_id,menu_id)
+        values(#{roleId},#{menuId})
+    </insert>
+
+
+    <select id="findByCondition" parameterType="String" resultType="role">
+        select * from t_role
+        <if test="value != null and value.length > 0">
+            where name like #{queryString} or keyword like #{queryString} or description like #{queryString}
+        </if>
+    </select>
+
+    <select id="findPermissionIdsByRoleId" resultType="int">
+        select permission_id from t_role_permission where role_id=#{roleId}
+    </select>
+
+    <select id="findMenuIdsByRoleId" resultType="int">
+        select menu_id from t_role_menu where role_id=#{roleId}
+    </select>
+
+    <select id="findByroleId" parameterType="int" resultType="role">
+        select * from t_role where id=#{id}
+    </select>
+
+    <update id="update" parameterType="role">
+        update t_role
+        set
+           name=#{name},
+           keyword=#{keyword},
+           description=#{description}
+        where
+             id=#{id}
+    </update>
+
+    <delete id="deleteRolePermission" parameterType="int">
+        delete from t_role_permission where role_id=#{id}
+    </delete>
+
+    <delete id="deleteRoleMenu" parameterType="int">
+        delete from t_role_menu where role_id=#{id}
+    </delete>
+
+    <select id="findCountByRoleId" parameterType="int" resultType="int">
+        select count(0) from t_user_role where role_id=#{id}
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_role where id=#{id}
+    </delete>
+
+</mapper>

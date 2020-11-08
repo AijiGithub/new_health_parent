@@ -2,6 +2,7 @@ package com.itheima.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.Utils.QiNiuUtils;
+import com.itheima.health.constant.JedisKeyConstant;
 import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
@@ -45,10 +46,11 @@ public class SetmealController {
     /**
      * 上传图片
      * name="imgFile"
+     *
      * @return
      */
     @PostMapping("/upload")
-    public Result upload(MultipartFile imgFile){
+    public Result upload(MultipartFile imgFile) {
         //- 获取原文件名才可以获取它后缀名
         String originalFilename = imgFile.getOriginalFilename();
         // 获取文件的扩展名，即后缀名 dlrb.jpg  => .jpg
@@ -69,29 +71,32 @@ public class SetmealController {
              *     }
              * }
              */
-            Map<String,String> resultMap = new HashMap<String,String>();
-            resultMap.put("domain",QiNiuUtils.DOMAIN);
-            resultMap.put("imgName",uniqueName);
-            return new Result(true, MessageConstant.PIC_UPLOAD_SUCCESS,resultMap);
+            Map<String, String> resultMap = new HashMap<String, String>();
+            resultMap.put("domain", QiNiuUtils.DOMAIN);
+            resultMap.put("imgName", uniqueName);
+            return new Result(true, MessageConstant.PIC_UPLOAD_SUCCESS, resultMap);
         } catch (IOException e) {
-            log.error("上传文件失败",e);
+            log.error("上传文件失败", e);
             return new Result(false, MessageConstant.PIC_UPLOAD_FAIL);
         }
     }
 
     /**
      * 添加套餐
-     * @param setmeal 套餐信息
+     *
+     * @param setmeal       套餐信息
      * @param checkgroupIds 选中的检查组id
      * @return
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
-        // 调用服务添加
-        Integer setmealId = setmealService.add(setmeal,checkgroupIds);
+    public Result add(@RequestBody Setmeal setmeal, Integer[] checkgroupIds) {
         Jedis jedis = jedisPool.getResource();
+        //套餐数据增删改的时候删除Redis里面的套餐列表数据
+        jedis.del(JedisKeyConstant.GETSETMEAL_LIST_JEDIS_KEY);
+        // 调用服务添加
+        Integer setmealId = setmealService.add(setmeal, checkgroupIds);
         String key = "setmeal:static:html";
-        jedis.sadd(key,setmealId+"|1|" + System.currentTimeMillis());
+        jedis.sadd(key, setmealId + "|1|" + System.currentTimeMillis());
         jedis.close();
         return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
     }
@@ -100,18 +105,19 @@ public class SetmealController {
      * 分页查询
      */
     @PostMapping("/findPage")
-    public Result findPage(@RequestBody QueryPageBean queryPageBean){
+    public Result findPage(@RequestBody QueryPageBean queryPageBean) {
         PageResult<Setmeal> pageResult = setmealService.findPage(queryPageBean);
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,pageResult);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, pageResult);
     }
 
     /**
      * 通过id查询套餐信息
+     *
      * @param id
      * @return
      */
     @GetMapping("/findById")
-    public Result findById(int id){
+    public Result findById(int id) {
         Setmeal setmeal = setmealService.findById(id);
         /**
          * {
@@ -123,35 +129,38 @@ public class SetmealController {
          *     }
          * }
          */
-        Map<String,Object> resultMap = new HashMap<String,Object>(2);
-        resultMap.put("setmeal",setmeal);
-        resultMap.put("domain",QiNiuUtils.DOMAIN);
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,resultMap);
+        Map<String, Object> resultMap = new HashMap<String, Object>(2);
+        resultMap.put("setmeal", setmeal);
+        resultMap.put("domain", QiNiuUtils.DOMAIN);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, resultMap);
     }
 
     /**
      * 查询属于这个套餐的选中的检查组id
+     *
      * @param id
      * @return
      */
     @GetMapping("/findCheckgroupIdsBySetmealId")
-    public Result findCheckgroupIdsBySetmealId(int id){
+    public Result findCheckgroupIdsBySetmealId(int id) {
         // 后端list => 前端 [], javaBean 或 map => json{}
         // 查询属于这个套餐的选中的检查组id
         List<Integer> list = setmealService.findCheckgroupIdsBySetmealId(id);
-        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,list);
+        return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS, list);
     }
 
     /**
      * 编辑套餐的提交
      */
     @PostMapping("/update")
-    public Result update(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
-        // 调用服务更新
-        setmealService.update(setmeal,checkgroupIds);
+    public Result update(@RequestBody Setmeal setmeal, Integer[] checkgroupIds) {
         Jedis jedis = jedisPool.getResource();
+        //套餐数据增删改的时候删除Redis里面的套餐列表数据
+        jedis.del(JedisKeyConstant.GETSETMEAL_LIST_JEDIS_KEY);
+        // 调用服务更新
+        setmealService.update(setmeal, checkgroupIds);
         String key = "setmeal:static:html";
-        jedis.sadd(key,setmeal.getId()+"|1|" + System.currentTimeMillis());
+        jedis.sadd(key, setmeal.getId() + "|1|" + System.currentTimeMillis());
         jedis.close();
         return new Result(true, "更新套餐成功");
     }
@@ -160,14 +169,15 @@ public class SetmealController {
      * 删除套餐
      */
     @PostMapping("/deleteById")
-    public Result deleteById(int id){
+    public Result deleteById(int id) {
+        Jedis jedis = jedisPool.getResource();
+        //套餐数据增删改的时候删除Redis里面的套餐列表数据
+        jedis.del(JedisKeyConstant.GETSETMEAL_LIST_JEDIS_KEY);
         // 调用服务删除
         setmealService.deleteById(id);
-        Jedis jedis = jedisPool.getResource();
         String key = "setmeal:static:html";
-        jedis.sadd(key,id+"|0|" + System.currentTimeMillis());
+        jedis.sadd(key, id + "|0|" + System.currentTimeMillis());
         jedis.close();
         return new Result(true, "删除套餐成功！");
     }
-
 }
