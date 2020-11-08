@@ -47,4 +47,6 @@ public interface OrderSettingDao {
      * @return
      */
     int editReservationsByOrderDate(OrderSetting orderSetting);
+
+    int cleanOrderByDate(Date date);
 }

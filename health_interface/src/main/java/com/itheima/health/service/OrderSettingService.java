@@ -3,6 +3,7 @@ package com.itheima.health.service;
 import com.itheima.health.exception.MyException;
 import com.itheima.health.pojo.OrderSetting;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,4 +34,6 @@ public interface OrderSettingService {
      * @param os
      */
     void editNumberByDate(OrderSetting os) throws MyException;
+
+    int cleanOrderByDate(Date date) throws MyException;
 }
