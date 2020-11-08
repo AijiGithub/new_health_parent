@@ -4,6 +4,10 @@ package com.itheima.health.constant;
  * 消息常量
  */
 public interface MessageConstant {
+    static final String EDIT_MENU_SUCCESS = "编辑菜单成功";
+    static final String DELETE_MENU_SUCCESS = "删除菜单成功";
+    static final String QUERY_MENU_SUCCESS = "查询菜单成功";
+    static final String ADD_MENU_SUCCESS = "新增菜单成功";
     static final String DELETE_CHECKITEM_FAIL = "删除检查项失败";
     static final String DELETE_CHECKITEM_SUCCESS = "删除检查项成功";
     static final String ADD_CHECKITEM_SUCCESS = "新增检查项成功";
@@ -65,7 +69,10 @@ public interface MessageConstant {
     static final String GET_SETMEAL_LIST_SUCCESS = "查询套餐列表数据成功";
     static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
     static final String QUERY_PERMISSION_SUCCESS = "查询权限列表数据成功";
-    static final String QUERY_MENU_SUCCESS = "查询菜单列表数据成功";
+//    static final String QUERY_MENU_SUCCESS = "查询菜单列表数据成功";
     static final String ADD_ROLE_SUCCESS = "添加角色成功";
     static final String QUERY_ROLE_SUCCESS = "查询角色成功";
+    static final String ADD_PERMISSION_SUCCESS = "添加权限成功";
+    static final String EDIT_PERMISSION_SUCCESS = "更新权限成功";
+    static final String DELETE_PERMISSION_SUCCESS = "删除权限成功";
 }

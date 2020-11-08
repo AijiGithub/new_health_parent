@@ -2,11 +2,55 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<!--namespace属性：名称空间， 写接口的全限定名-->
 <mapper namespace="com.itheima.health.dao.MenuDao">
+    <!--select标签用于插叙；  id属性值就是接口的方法名，
+        resultType ：返回值的类型
+                    如果是集合，写泛型即可；
+    -->
+<insert id="add" parameterType="menu">
+    insert into t_menu (name,linkUrl,path,priority,icon,description,parentMenuId,level)
+    values(#{name},#{linkUrl},#{path},#{priority},#{icon},#{description},#{parentMenuId},#{level})
+</insert>
 
-    <select id="findAll" resultType="com.itheima.health.pojo.Menu">
-        select * from t_menu
-    </select>
+<select id="findAll" resultType="menu">
+    select * from t_menu
+</select>
 
-</mapper>
+<select id="findPage" parameterType="String" resultType="menu">
+    select * from t_menu
+    <where>
+        <if test="value != null and value.length>0">
+            linkUrl like #{queryString} or name like #{queryString}
+        </if>
+    </where>
+</select>
+
+<select id="findRoleByMenu" parameterType="integer" resultType="integer">
+    select count(1) from t_role_menu where menu_id = #{id}
+
+</select>
+
+
+<delete id="deleteById" parameterType="integer">
+    delete from t_menu where id = #{id}
+</delete>
+
+<select id="findById" parameterType="integer" resultType="menu">
+    select * from t_menu where id = #{id}
+</select>
+
+
+<update id="update" parameterType="menu">
+    update t_menu set
+          name = #{name},
+          linkUrl = #{linkUrl},
+          path = #{path},
+          priority = #{priority},
+          description = #{description},
+          icon = #{icon},
+          parentMenuId = #{parentMenuId},
+          level = #{level}
+           where id = #{id}
+</update>
+</mapper>    
