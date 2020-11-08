@@ -22,7 +22,7 @@ public interface MenuDao {
     //通过id删除
     void deleteById(int id);
 
-    //通过id查询
+    //通过id查询111
     Menu findById(int id);
 
     //编辑菜单
