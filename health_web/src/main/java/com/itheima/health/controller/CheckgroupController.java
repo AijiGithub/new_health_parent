@@ -1,6 +1,7 @@
 package com.itheima.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.itheima.health.constant.JedisKeyConstant;
 import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
@@ -8,7 +9,10 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.CheckGroup;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.service.CheckGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 
@@ -24,17 +28,20 @@ import java.util.List;
 @RequestMapping("/checkgroup")
 public class CheckgroupController {
 
+    @Autowired
+    private JedisPool jedisPool;
     @Reference
     private CheckGroupService checkGroupService;
 
     /**
      * 添加检查组
-     * @param checkGroup 检查组信息
+     *
+     * @param checkGroup   检查组信息
      * @param checkitemIds 选中的检查项id集合
      * @return
      */
     @PostMapping("/add")
-    public Result add(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds){
+    public Result add(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds) {
         // 调用服务添加
         checkGroupService.add(checkGroup, checkitemIds);
         return new Result(true, MessageConstant.ADD_CHECKGROUP_SUCCESS);
@@ -42,41 +49,46 @@ public class CheckgroupController {
 
     /**
      * 分页条件查询
+     *
      * @param queryPageBean
      * @return
      */
     @PostMapping("/findPage")
-    public Result findPage(@RequestBody QueryPageBean queryPageBean){
+    public Result findPage(@RequestBody QueryPageBean queryPageBean) {
         // 调用服务分页查询
         PageResult<CheckGroup> pageResult = checkGroupService.findPage(queryPageBean);
-        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,pageResult);
+        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS, pageResult);
     }
 
     /**
      * 通过id查询
      */
     @GetMapping("/findById")
-    public Result findById(int id){
+    public Result findById(int id) {
         CheckGroup checkGroup = checkGroupService.findById(id);
-        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroup);
+        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS, checkGroup);
     }
 
     /**
      * 通过检查组id查询选中的检查项id集合
      */
     @GetMapping("/findCheckItemIdsByCheckGroupId")
-    public Result findCheckItemIdsByCheckGroupId(int id){
+    public Result findCheckItemIdsByCheckGroupId(int id) {
         List<Integer> checkitemIds = checkGroupService.findCheckItemIdsByCheckGroupId(id);
-        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkitemIds);
+        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS, checkitemIds);
     }
 
     /**
      * 更新
      */
     @PostMapping("/update")
-    public Result update(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds){
+    public Result update(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds) {
+        Jedis jedis = jedisPool.getResource();
+        //检查组的数据更新的时候删除Redis里面的套餐列表数据
+        jedis.del(JedisKeyConstant.GETSETMEAL_LIST_JEDIS_KEY);
+        jedis.close();
         // 调用服务更新
-        checkGroupService.update(checkGroup,checkitemIds);
+        checkGroupService.update(checkGroup, checkitemIds);
         return new Result(true, MessageConstant.EDIT_CHECKGROUP_SUCCESS);
     }
 
@@ -84,7 +96,7 @@ public class CheckgroupController {
      * 通过id删除
      */
     @PostMapping("/deleteById")
-    public Result deleteById(int id){
+    public Result deleteById(int id) {
         // 调用服务删除
         checkGroupService.deleteById(id);
         return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
@@ -94,8 +106,8 @@ public class CheckgroupController {
      * 查询所有
      */
     @GetMapping("/findAll")
-    public Result findAll(){
+    public Result findAll() {
         List<CheckGroup> list = checkGroupService.findAll();
-        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,list);
+        return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS, list);
     }
 }
