@@ -65,7 +65,6 @@ public class ReportController {
         // 过去一年, 年-1
         Calendar cal = Calendar.getInstance();
         cal.setTime(parse);
-        cal.add(1,1);
         // 遍历12次，依次加1个月
         for (int i = 0; i < cha+1; i++) {
             cal.add(2,1);

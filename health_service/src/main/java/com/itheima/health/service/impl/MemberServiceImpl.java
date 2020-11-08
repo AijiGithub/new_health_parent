@@ -43,8 +43,11 @@ public class MemberServiceImpl implements MemberService {
         List<Integer> list = new ArrayList<>(12);
         // 2020-01
         months.forEach(month ->{
+            String start = month+"-01";
+            String end = month+"-31";
+
             // 查询到每个月最后一天为止的会员总数量
-            list.add(memberDao.findMemberCountBeforeDate(month+"-31"));
+            list.add(memberDao.findMemberCountBeforeDate(start,end));
         });
         return list;
     }
