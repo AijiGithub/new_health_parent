@@ -75,4 +75,10 @@ public interface MessageConstant {
     static final String ADD_PERMISSION_SUCCESS = "添加权限成功";
     static final String EDIT_PERMISSION_SUCCESS = "更新权限成功";
     static final String DELETE_PERMISSION_SUCCESS = "删除权限成功";
+
+    static final String ADD_USER_SUCCESS = "添加用户成功";
+    static final String QUERY_USER_SUCCESS = "查询用户列表数据成功";
+    static final String EDIT_USER_SUCCESS = "编辑用户数据成功";
+    static final String DELETE_USER_SUCCESS ="删除用户数据成功" ;
+    static final String DELETE_USER_FAIL="删除用户数据失败" ;
 }
