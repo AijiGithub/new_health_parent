@@ -7,6 +7,7 @@ import com.itheima.health.service.MemberService;
 import com.itheima.health.service.OrderService;
 import com.itheima.health.service.ReportService;
 import com.itheima.health.service.SetmealService;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -48,19 +49,29 @@ public class ReportController {
      * @return
      */
     @GetMapping("/getMemberReport")
-    public Result getMemberReport(){
+    public Result getMemberReport(String startmonth,String endmonth)throws Exception{
+        SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM");
+        Date parse = DateFormat.parse(startmonth);
+        Date parse1 = DateFormat.parse(endmonth);
+        int year1 = parse.getYear();
+        int year2 = parse1.getYear();
+        int month1 = parse.getMonth();
+        int month2 = parse1.getMonth();
+        int cha = (year2-year1)*12+(month2-month1);
         // 产生12个月的数据, 2020-01
         List<String> months = new ArrayList<String>();
         // 使用日历
-        Calendar car = Calendar.getInstance();
+
         // 过去一年, 年-1
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-        car.add(Calendar.YEAR, -1);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(parse);
+        cal.add(1,1);
         // 遍历12次，依次加1个月
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < cha+1; i++) {
+            cal.add(2,1);
             // +1个月
-            car.add(Calendar.MONTH,1);
-            months.add(sdf.format(car.getTime()));
+            months.add(DateFormat.format(cal.getTime()));
+
         }
 
         // 调用服务去查询12个月的数据
