@@ -30,4 +30,5 @@ public class UserController {
         System.out.println("登陆的用户名:" + user.getUsername());
         return new Result(true, MessageConstant.GET_USERNAME_SUCCESS,user.getUsername());
     }
+//    测试
 }
